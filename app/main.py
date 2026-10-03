@@ -32,10 +32,21 @@ def summary(db: Session=Depends(get_db)):
             "pass_percentage":round(passed*100/total) if total else 0}
 
 @app.get("/api/test-cases")
-def cases(db: Session=Depends(get_db)): return db.query(TestCase).order_by(TestCase.id).all()
+def cases(db: Session=Depends(get_db)): 
+    return db.query(TestCase).order_by(TestCase.id).all()
+
+@app.get("/api/test-cases/{test_id}")
+def case_detail(test_id: int, db: Session=Depends(get_db)):
+    test_case = db.query(TestCase).filter(TestCase.id == test_id).first()
+
+    if not test_case:
+        raise HTTPException(status_code=404, detail="Test case not found")
+
+    return test_case
 
 @app.get("/api/runs")
-def runs(db: Session=Depends(get_db)): return db.query(TestRun).order_by(TestRun.id.desc()).all()
+def runs(db: Session=Depends(get_db)): 
+    return db.query(TestRun).order_by(TestRun.id.desc()).all()
 
 @app.get("/api/runs/{run_id}")
 def run_detail(run_id:int, db:Session=Depends(get_db)):
