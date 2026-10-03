@@ -1,0 +1,7 @@
+venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+testpilot.db
+reports/*.html
+screenshots/*.png
